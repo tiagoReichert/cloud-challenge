@@ -1,0 +1,13 @@
+{
+  "name": "cloud_challenge",
+  "version": "1.0.0",
+  "description": "Node.js on Docker for Cloud Challenge",
+  "author": "Tiago M Reichert <tiago@reichert.eti.br>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
