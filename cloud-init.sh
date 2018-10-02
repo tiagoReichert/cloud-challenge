@@ -17,6 +17,6 @@ sudo apt-get install -y docker-ce
 sudo docker swarm init
 
 # Deploy swarm service with NodeJS (quantity of replicas is the same as processors available on the host)
-sudo docker service create --name nodejs --replicas=$(nproc) --publish 3000:3000 tiagoreichert/cloud-challenge
+sudo docker service create --name nodejs --replicas=$(nproc) --publish 3000:3000 tiagoreichert/cloud-challenge:1.0
 
 
