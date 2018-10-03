@@ -33,5 +33,5 @@ sudo docker service create --name nodejs --replicas=$(nproc) --publish 3000:3000
 # Deploy log_parser that will run every day at 22:00
 sudo docker service create --name logparser -e SMTP_SERVER=${SMTP_SERVER} -e SMTP_PORT=${SMTP_PORT} \
 -e SMTP_TLS=${SMTP_TLS} -e SMTP_NAME=${SMTP_NAME} -e SMTP_USERNAME=${SMTP_USERNAME} -e SMTP_PASSWORD=${SMTP_PASSWORD} \
--e SMTP_RECIPIENT=${SMTP_RECIPIENT} -e SERVICE_NAME=${SERVICE_NAME} -v /var/run/docker.sock:/var/run/docker.sock \
-tiagoreichert/cloud-challenge-logparser
+-e SMTP_RECIPIENT=${SMTP_RECIPIENT} -e SERVICE_NAME=${SERVICE_NAME} \
+--mount type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock tiagoreichert/cloud-challenge-logparser
