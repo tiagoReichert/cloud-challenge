@@ -5,7 +5,7 @@ var morgan  = require('morgan')
 app.use(morgan('combined'))
 
 app.get('/', function (req, res) {
-res.send('Hello World! (I\'m version 2)');
+res.send('Hello World!');
 });
 
 app.listen(3000, function () {
