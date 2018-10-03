@@ -12,13 +12,14 @@ import sys
 
 def main():
     logging.basicConfig(stream=sys.stdout, format='%(asctime)s [%(levelname)s] %(message)s', level=logging.INFO)
-    send_email(args=parse_args(), message=parse_logs())
+    args = parse_args()
+    send_email(args=args, message=parse_logs(args.sevice_name))
 
 
-def parse_logs():
+def parse_logs(sevice_name):
     # Bash command to parse logs
-    command = "curl -s --unix-socket /var/run/docker.sock http:/v1.24/services/nodejs/logs?stdout=1 " \
-              "| awk '{print $7\" \"$9}' | sort | grep -v '^ *$' |  uniq -c | sed -e 's/^[ \t]*//'"
+    command = "curl -s --unix-socket /var/run/docker.sock http:/v1.24/services/%s/logs?stdout=1 " \
+              "| awk '{print $7\" \"$9}' | sort | grep -v '^ *$' |  uniq -c | sed -e 's/^[ \t]*//'" % sevice_name
     return subprocess.check_output(['bash', '-c', command])
 
 
@@ -55,6 +56,7 @@ def parse_args():
     parser.add_argument('--smtp_username', default=os.environ.get('SMTP_USERNAME', None))
     parser.add_argument('--smtp_password', default=os.environ.get('SMTP_PASSWORD', None))
     parser.add_argument('--smtp_recipient', default=os.environ.get('SMTP_RECIPIENT', None))
+    parser.add_argument('--service_name', default=os.environ.get('SERVICE_NAME', None))
 
     return parser.parse_args()
 
