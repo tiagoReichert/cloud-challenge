@@ -28,7 +28,7 @@ For further managament of the application you will need to use following command
 
 Update an existing service
 > sudo docker service update --update-parallelism 1 --update-order start-first
---update-delay 30s --update-failure-action=rollback --image tiagoreichert/cloud-challenge:2.0 nodejs
+--update-delay 10s --update-failure-action=rollback --image tiagoreichert/cloud-challenge-nodejs:2.0 nodejs
 
 Rollback the update if wanted
 > sudo docker service rollback nodejs
@@ -40,4 +40,4 @@ Scale the service up or down
 > sudo docker service scale nodejs=3
 
 Check service logs
-> docker service logs nodejs
+> sudo docker service logs nodejs
