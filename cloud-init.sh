@@ -19,10 +19,10 @@ sudo add-apt-repository \
    $(lsb_release -cs) \
    stable"
 sudo apt-get update
-sudo systemctl enable docker
 
 # Install Docker community edition
 sudo apt-get install -y docker-ce
+sudo systemctl enable docker
 
 # Enable swarm mode
 sudo docker swarm init
