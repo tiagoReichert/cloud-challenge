@@ -18,3 +18,5 @@ services:
       - SMTP_USERNAME=
       - SMTP_PASSWORD=
       - SMTP_RECIPIENT=
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
