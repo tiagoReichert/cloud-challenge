@@ -13,13 +13,13 @@ import sys
 def main():
     logging.basicConfig(stream=sys.stdout, format='%(asctime)s [%(levelname)s] %(message)s', level=logging.INFO)
     args = parse_args()
-    send_email(args=args, message=parse_logs(args.sevice_name))
+    send_email(args=args, message=parse_logs(args.service_name))
 
 
-def parse_logs(sevice_name):
+def parse_logs(service_name):
     # Bash command to parse logs
     command = "curl -s --unix-socket /var/run/docker.sock http:/v1.24/services/%s/logs?stdout=1 " \
-              "| awk '{print $7\" \"$9}' | sort | grep -v '^ *$' |  uniq -c | sed -e 's/^[ \t]*//'" % sevice_name
+              "| awk '{print $7\" \"$9}' | sort | grep -v '^ *$' |  uniq -c | sed -e 's/^[ \t]*//'" % service_name
     return subprocess.check_output(['bash', '-c', command])
 
 
