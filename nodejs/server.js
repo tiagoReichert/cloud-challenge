@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 
+var morgan  = require('morgan')
+app.use(morgan('combined'))
+
 app.get('/', function (req, res) {
 res.send('Hello World! (I\'m version 2)');
 });
