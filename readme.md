@@ -3,7 +3,7 @@
 ## Cloud Challenge
 This repository contains the source codes for a cloud challenge.
 
-#### How to deploy:
+### How to deploy:
 
 You can just add the missing environment variables at the begging of the cloud-init.sh
 script and use it as cloud-init script for a new virtual machine using Ubuntu 16.04 LTS.
@@ -25,7 +25,7 @@ vi cloud-init.sh
 chmod +x cloud-init.sh && ./cloud-init.sh
 ```
 
-#### Throughput Analyzer
+### Throughput Analyzer
 To analyze the throughput supported by the application the script [analyzer.py](throughput/analyzer.py)
 was developed, to run it you can specify following parameters:
 - -p (or --path): The URL to which the script should do requests `default = http://127.0.0.1:3000`
@@ -37,22 +37,28 @@ You will see a return like following after the script finishes:
 reichert@ubuntu:~$ python analyzer.py -t 2 -s 10
 6627 requests during 0:00:10.004528 [662 req/s]
 ```
-PS: The quantity of requests per second may vary to the resources avaiable for the script to run (CPU and network are the biggest bottlenecks)
-#### Management Commands:
+PS: The quantity of requests per second may vary to the resources available for the script to run (CPU and network are the biggest bottlenecks)
+### Management Commands:
 For further management of the application you will need to use following commands
 
 Update an existing service
-> sudo docker service update --update-parallelism 1 --update-order start-first
+```console
+sudo docker service update --update-parallelism 1 --update-order start-first
 --update-delay 10s --update-failure-action=rollback --image tiagoreichert/cloud-challenge-nodejs:2.0 nodejs
-
+```
 Rollback the update if wanted
-> sudo docker service rollback nodejs
-
+```console
+sudo docker service rollback nodejs
+```
 Remove service
-> sudo docker service remove nodejs
-
+```console
+sudo docker service remove nodejs
+```
 Scale the service up or down
-> sudo docker service scale nodejs=3
-
+```console
+sudo docker service scale nodejs=3
+```
 Check service logs
-> sudo docker service logs nodejs
+```console
+sudo docker service logs nodejs
+```
