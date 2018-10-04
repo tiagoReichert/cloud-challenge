@@ -1,6 +1,5 @@
 #!/usr/local/bin/python
 # coding=utf-8
-import subprocess
 import smtplib
 import os
 import argparse
@@ -8,6 +7,7 @@ from email.mime.multipart import MIMEMultipart
 from email.MIMEText import MIMEText
 import logging
 import sys
+import docker
 
 
 def main():
@@ -17,10 +17,21 @@ def main():
 
 
 def parse_logs(service_name):
-    # Bash command to parse logs
-    command = "curl -s --unix-socket /var/run/docker.sock http:/v1.24/services/%s/logs?stdout=1 " \
-              "| awk '{print $7\" \"$9}' | sort | grep -v '^ *$' |  uniq -c | sed -e 's/^[ \t]*//'" % service_name
-    return subprocess.check_output(['bash', '-c', command])
+    client = docker.from_env()
+    node_service = client.services.get(service_name)
+    entries = {}
+    count = 0
+    for log in node_service.logs(stream=False, stdout=True):
+        count += 1
+        print count
+        splitted = log.split(' ')
+        if len(splitted) > 8:
+            request = '%s %s' % (splitted[6], splitted[8])
+            if request not in entries:
+                entries[request] = 1
+            else:
+                entries[request] = entries.get(request) + 1
+    return '\n'.join(['%s %s' % (entries[x], x) for x in entries])
 
 
 def send_email(args, message):
