@@ -65,8 +65,8 @@ sudo docker service logs nodejs
 
 ### Additional comments:
  I did not use any infrastructure automation software (like Ansible), because in this case it was not needed
-(the deploy is simple enough like it is), however, if this software would be deployed for production,
-some changes would need to be done, but this would require more hosts, and for this challenge I should use only one host.
+(the deploy is simple enough like it is). If this software would be deployed for production,
+some changes would need to be done, however, this would require more hosts, and for this challenge I should use only one host.
 
 Some things that could be improved are:
 
