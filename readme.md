@@ -25,8 +25,15 @@ vi cloud-init.sh
 chmod +x cloud-init.sh && ./cloud-init.sh
 ```
 
+#### Throughput Analyzer
+To analyze the throughput supported by the application the script [analyzer.py](throughput/analyzer.py)
+was developed, to run it you can specify following parameters:
+- -p (or --path): The URL to which the script should do requests `default = http://127.0.0.1:3000`
+- -s (or --seconds): The maximum time that the script should run `default = 300`
+- -t (or --threads): The quantity of threads that should be started to run the script `default = 1`
+
 #### Management Commands:
-For further managament of the application you will need to use following commands
+For further management of the application you will need to use following commands
 
 Update an existing service
 > sudo docker service update --update-parallelism 1 --update-order start-first
