@@ -38,13 +38,13 @@ reichert@ubuntu:~$ python analyzer.py -t 2 -s 10
 6627 requests during 0:00:10.004528 [662 req/s]
 ```
 PS: The quantity of requests per second may vary to the resources available for the script to run (CPU and network are the biggest bottlenecks)
+
 ### Management Commands:
 For further management of the application you will need to use following commands
 
 Update an existing service
 ```console
-sudo docker service update --update-parallelism 1 --update-order start-first
---update-delay 10s --update-failure-action=rollback --image tiagoreichert/cloud-challenge-nodejs:2.0 nodejs
+sudo docker service update --update-parallelism 1 --update-order start-first --update-delay 10s --update-failure-action=rollback --image tiagoreichert/cloud-challenge-nodejs:2.0 nodejs
 ```
 Rollback the update if wanted
 ```console
@@ -62,3 +62,16 @@ Check service logs
 ```console
 sudo docker service logs nodejs
 ```
+
+### Additional comments:
+ I did not use any infrastructure automation software (like Ansible), because in this case it was not needed
+(the deploy is simple enough like it is), however, if this software would be deployed for production,
+some changes would need to be done, but this would require more hosts, and for this challenge I should use only one host.
+
+Some things that could be improved are:
+
+- Setup a cluster for containers ([Rancher](https://rancher.com/) is a good way to go)
+- Create monitoring of the applications ([Prometheus](https://prometheus.io/) + [Grafana](https://grafana.com/))
+- Use [ELK](https://www.elastic.co/elk-stack) instead of this [log parser](log_parser/parser.py) script to extract meaningful information from logs.
+- Use signed certificates for HTTPS ([Let's Encrypt](https://letsencrypt.org/) is a free solution for dev/test environments)
+- Among others...
