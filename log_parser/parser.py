@@ -20,10 +20,7 @@ def parse_logs(service_name):
     client = docker.from_env()
     node_service = client.services.get(service_name)
     entries = {}
-    count = 0
-    for log in node_service.logs(stream=False, stdout=True):
-        count += 1
-        print count
+    for log in node_service.logs(stdout=True):
         splitted = log.split(' ')
         if len(splitted) > 8:
             request = '%s %s' % (splitted[6], splitted[8])
