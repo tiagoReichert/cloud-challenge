@@ -32,6 +32,12 @@ was developed, to run it you can specify following parameters:
 - -s (or --seconds): The maximum time that the script should run `default = 300`
 - -t (or --threads): The quantity of threads that should be started to run the script `default = 1`
 
+You will see a return like following after the script finishes:
+```console
+reichert@ubuntu:~$ python analyzer.py -t 2 -s 10
+6627 requests during 0:00:10.004528 [662 req/s]
+```
+PS: The quantity of requests per second may vary to the resources avaiable for the script to run (CPU and network are the biggest bottlenecks)
 #### Management Commands:
 For further management of the application you will need to use following commands
 
