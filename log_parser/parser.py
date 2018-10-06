@@ -7,27 +7,25 @@ from email.mime.multipart import MIMEMultipart
 from email.MIMEText import MIMEText
 import logging
 import sys
-import docker
 
 
 def main():
     logging.basicConfig(stream=sys.stdout, format='%(asctime)s [%(levelname)s] %(message)s', level=logging.INFO)
     args = parse_args()
-    send_email(args=args, message=parse_logs(args.service_name))
+    send_email(args=args, message=parse_logs())
 
 
-def parse_logs(service_name):
-    client = docker.from_env()
-    node_service = client.services.get(service_name)
+def parse_logs():
     entries = {}
-    for log in node_service.logs(stdout=True):
-        splitted = log.split(' ')
-        if len(splitted) > 8:
-            request = '%s %s' % (splitted[6], splitted[8])
-            if request not in entries:
-                entries[request] = 1
-            else:
-                entries[request] = entries.get(request) + 1
+    with open("/log/access_file.log", "r") as ins:
+        for line in ins:
+            splitted = line.split(' ')
+            if len(splitted) > 8:
+                request = '%s %s' % (splitted[6], splitted[8])
+                if request not in entries:
+                    entries[request] = 1
+                else:
+                    entries[request] = entries.get(request) + 1
     return '\n'.join(['%s %s' % (entries[x], x) for x in entries])
 
 
@@ -64,7 +62,6 @@ def parse_args():
     parser.add_argument('--smtp_username', default=os.environ.get('SMTP_USERNAME', None))
     parser.add_argument('--smtp_password', default=os.environ.get('SMTP_PASSWORD', None))
     parser.add_argument('--smtp_recipient', default=os.environ.get('SMTP_RECIPIENT', None))
-    parser.add_argument('--service_name', default=os.environ.get('SERVICE_NAME', None))
 
     return parser.parse_args()
 
