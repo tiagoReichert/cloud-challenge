@@ -51,7 +51,7 @@ def parse_args():
 
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 
-    parser.add_argument('--path', default=os.environ.get('PATH', None))
+    parser.add_argument('--url', default=os.environ.get('URL', None))
     parser.add_argument('--seconds', default=os.environ.get('SECONDS', None))
     parser.add_argument('--threads', default=os.environ.get('THREADS', None))
 
