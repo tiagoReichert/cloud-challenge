@@ -45,4 +45,4 @@ sed -i "s/{NGINX_WORKERS}/${NGINX_WORKERS}/" ./docker-compose.yml
 sed -i "s/{CRON_MASK}/${LOGPARSER_CRON_MASK}/" ./docker-compose.yml
 
 # Start the stack with NodeJS, Nginx and LogParser
-docker stack deploy --compose-file docker-compose.yml app
+sudo docker stack deploy --compose-file docker-compose.yml app
