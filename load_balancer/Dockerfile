@@ -10,6 +10,7 @@ COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
 ENV COMMON_NAME=localhost \
-    NODEJS_ADDRESS=app_nodejs
+    NODEJS_ADDRESS=app_nodejs \
+    NGINX_WORKERS=1
 
 ENTRYPOINT ["/app/entrypoint.sh"]
