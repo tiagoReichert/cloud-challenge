@@ -20,24 +20,44 @@ curl https://raw.githubusercontent.com/tiagoReichert/cloud-challenge/master/clou
 ```console
 vi cloud-init.sh
 ```
-4. Run the script (this will install all dependencies and start nodejs and logparser)
+4. Run the script (this will install all dependencies and start nodejs, nginx and logparser)
 ```console
 chmod +x cloud-init.sh && ./cloud-init.sh
 ```
 
+5. Just wait until all containers are started
+```console
+sudo docker service ls
+```
+
+Now you should already be able to access your application over HTTP and HTTPS.
+If you specified valid SMTP variables, you will also receive the emails from log_parser on the defined time period defined with the cron mask.
+
 ### Throughput Analyzer
 To analyze the throughput supported by the application the script [analyzer.py](throughput/analyzer.py)
-was developed, to run it you can specify following parameters:
-- -p (or --path): The URL to which the script should do requests `default = http://127.0.0.1:3000`
-- -s (or --seconds): The maximum time that the script should run `default = 300`
-- -t (or --threads): The quantity of threads that should be started to run the script `default = 1`
+was developed, to run it you need to specify following parameters:
 
-You will see a return like following after the script finishes:
+- URL : The path to which the script should do requests;
+- SECONDS : The maximum time that the script should run;
+- THREADS: The quantity of threads that should be started to run the script.
+
+The quantity of requests per second may vary to the resources available for the script to run (CPU and network are the biggest bottlenecks).
+
+##### Running with Docker:
+While using docker to run the script you will need to specify an address from which the container can access the application
 ```console
-reichert@ubuntu:~$ python analyzer.py -t 2 -s 10
-6627 requests during 0:00:10.004528 [662 req/s]
+reichert@ubuntu:~$ sudo docker run --rm -e URL=https://172.16.111.129 -e THREADS=2 -e SECONDS=10 tiagoreichert/cloud-challenge-analyzer
+4373 requests during 0:00:10.001029 [437 req/s]
 ```
-PS: The quantity of requests per second may vary to the resources available for the script to run (CPU and network are the biggest bottlenecks)
+
+##### Running without Docker:
+You can also run the script directly using Python 2:
+```console
+reichert@ubuntu:~$ curl -O https://raw.githubusercontent.com/tiagoReichert/cloud-challenge/master/throughput/analyzer.py
+reichert@ubuntu:~$ python analyzer.py --threads 2 --seconds 10 --url https://127.0.0.1
+4412 requests during 0:00:10.006118 [441 req/s]
+```
+
 
 ### Management Commands:
 For further management of the application you will need to use following commands
