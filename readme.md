@@ -1,4 +1,4 @@
-[![MIT License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE) [![Dockerhub](http://img.shields.io/badge/dockerhub-NodeJS-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-nodejs/) [![Dockerhub](http://img.shields.io/badge/dockerhub-LogParser-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-logparser/) 
+[![MIT License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE) [![Dockerhub](http://img.shields.io/badge/dockerhub-NodeJS-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-nodejs/) [![Dockerhub](http://img.shields.io/badge/dockerhub-LogParser-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-logparser/)  [![Dockerhub](http://img.shields.io/badge/dockerhub-Nginx-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-nginx/)  [![Dockerhub](http://img.shields.io/badge/dockerhub-ThroughputAnalyzer-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-analyzer/)
 
 ## Cloud Challenge
 This repository contains the source codes for a cloud challenge.
