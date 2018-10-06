@@ -3,20 +3,35 @@ version: '3'
 services:
   nodejs:
     image: tiagoreichert/cloud-challenge-nodejs:1.0
-    ports:
-      - 3000:3000
     deploy:
-       replicas: 1
-  log_parser:
-    image: tiagoreichert/cloud-challenge-logparser
-    environment:
-      - SERVICE_NAME=app_nodejs
-      - SMTP_SERVER=smtp.gmail.com
-      - SMTP_PORT=587
-      - SMTP_TLS=True
-      - SMTP_NAME=Cloud Challenge
-      - SMTP_USERNAME=
-      - SMTP_PASSWORD=
-      - SMTP_RECIPIENT=
+       replicas: {NODEJS_REPLICAS}
+  nginx:
+    image: tiagoreichert/cloud-challenge-nginx
+    depends_on:
+      - nodejs
+    ports:
+      - 443:443
+      - 80:80
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - nginx-logs:/var/log/nginx/
+    environment:
+      - NGINX_WORKERS={NGINX_WORKERS}
+  logparser:
+    image: tiagoreichert/cloud-challenge-logparser
+    depends_on:
+      - nginx
+    environment:
+      - SMTP_SERVER={SMTP_SERVER}
+      - SMTP_PORT={SMTP_PORT}
+      - SMTP_TLS={SMTP_TLS}
+      - SMTP_NAME={SMTP_NAME}
+      - SMTP_USERNAME={SMTP_USERNAME}
+      - SMTP_PASSWORD={SMTP_PASSWORD}
+      - SMTP_RECIPIENT={SMTP_RECIPIENT}
+      - TZ=America/Sao_Paulo
+      - CRON_MASK={CRON_MASK}
+    volumes:
+      - nginx-logs:/log/
+
+volumes:
+  nginx-logs:
