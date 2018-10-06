@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Specify here the needed parameters:
-export SERVICE_NAME='nodejs'
+# Specify here the needed/missing parameters:
 export SMTP_SERVER='smtp.gmail.com'
 export SMTP_PORT=587
 export SMTP_TLS=True
@@ -9,6 +8,9 @@ export SMTP_NAME='CloudChallenge'
 export SMTP_USERNAME=''
 export SMTP_PASSWORD=''
 export SMTP_RECIPIENT=''
+export NODEJS_REPLICAS=$(nproc)
+export NGINX_WORKERS=1
+export LOGPARSER_CRON_MASK='00  22  *  *  *'
 
 # Install dependencies and add Docker repository to apt
 sudo apt-get update
@@ -20,19 +22,27 @@ sudo add-apt-repository \
    stable"
 sudo apt-get update
 
-# Install Docker community edition
+# Install Docker community edition and enable to start automatically
 sudo apt-get install -y docker-ce
 sudo systemctl enable docker
 
 # Enable swarm mode
 sudo docker swarm init
 
-# Deploy swarm service with NodeJS (quantity of replicas is the same as processors available on the host)
-sudo docker service create --name nodejs --replicas=$(nproc) --publish 3000:3000 tiagoreichert/cloud-challenge-nodejs:1.0
+# Download docker-compose
+curl -O https://raw.githubusercontent.com/tiagoReichert/cloud-challenge/master/docker-compose.yml
 
-# Deploy log_parser that will run every day at 22:00
-sudo docker service create --name logparser -e SMTP_SERVER=${SMTP_SERVER} -e SMTP_PORT=${SMTP_PORT} \
--e SMTP_TLS=${SMTP_TLS} -e SMTP_NAME=${SMTP_NAME} -e SMTP_USERNAME=${SMTP_USERNAME} -e SMTP_PASSWORD=${SMTP_PASSWORD} \
--e SMTP_RECIPIENT=${SMTP_RECIPIENT} -e SERVICE_NAME=${SERVICE_NAME} -e "TZ=America/Sao_Paulo" \
---mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
---mount type=bind,source=/etc/timezone,target=/etc/timezone:ro tiagoreichert/cloud-challenge-logparser
+# Replace environment variables on docker-compose (this because docker swarm does not support docker-compose with environment variables)
+sed -i "s/{SMTP_SERVER}/${SMTP_SERVER}/" ./docker-compose.yml
+sed -i "s/{SMTP_PORT}/${SMTP_PORT}/" ./docker-compose.yml
+sed -i "s/{SMTP_TLS}/${SMTP_TLS}/" ./docker-compose.yml
+sed -i "s/{SMTP_NAME}/${SMTP_NAME}/" ./docker-compose.yml
+sed -i "s/{SMTP_USERNAME}/${SMTP_USERNAME}/" ./docker-compose.yml
+sed -i "s/{SMTP_PASSWORD}/${SMTP_PASSWORD}/" ./docker-compose.yml
+sed -i "s/{SMTP_RECIPIENT}/${SMTP_RECIPIENT}/" ./docker-compose.yml
+sed -i "s/{NODEJS_REPLICAS}/${NODEJS_REPLICAS}/" ./docker-compose.yml
+sed -i "s/{NGINX_WORKERS}/${NGINX_WORKERS}/" ./docker-compose.yml
+sed -i "s/{CRON_MASK}/${LOGPARSER_CRON_MASK}/" ./docker-compose.yml
+
+# Start the stack with NodeJS, Nginx and LogParser
+docker stack deploy --compose-file docker-compose.yml app
