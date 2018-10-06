@@ -10,16 +10,16 @@ import ssl
 
 class Requester(Thread):
 
-    def __init__(self, until_time, path):
+    def __init__(self, until_time, url):
         super(Requester, self).__init__()
         self.until_time = until_time
-        self.path = path
+        self.url = url
         self.count = 0
 
     def run(self):
         context = ssl._create_unverified_context()
         while datetime.datetime.now() < self.until_time:
-            return_code = urllib2.urlopen(self.path, context=context).getcode()
+            return_code = urllib2.urlopen(self.url, context=context).getcode()
             if return_code == 200:
                 self.count += 1
             else:
@@ -32,7 +32,7 @@ def main():
 
     begin = datetime.datetime.now()
 
-    threads = [Requester(until_time=begin+datetime.timedelta(seconds=int(p.seconds)), path=p.path)
+    threads = [Requester(until_time=begin+datetime.timedelta(seconds=int(p.seconds)), url=p.url)
                for _ in xrange(int(p.threads))]
 
     [thread.start() for thread in threads]
