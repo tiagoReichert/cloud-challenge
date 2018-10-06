@@ -59,7 +59,7 @@ def parse_args():
 
     parser.add_argument('-t', '--threads', required=False, default=1, action='store',
                         dest='threads',
-                        help='Maximum time that the script should run')
+                        help='Quantity of threads that script should start')
 
     return parser.parse_args()
 
