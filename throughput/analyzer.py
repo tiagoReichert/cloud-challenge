@@ -5,7 +5,8 @@ import urllib2
 import datetime
 import argparse
 from threading import Thread
-
+import os
+import ssl
 
 class Requester(Thread):
 
@@ -16,8 +17,9 @@ class Requester(Thread):
         self.count = 0
 
     def run(self):
+        context = ssl._create_unverified_context()
         while datetime.datetime.now() < self.until_time:
-            return_code = urllib2.urlopen(self.path).getcode()
+            return_code = urllib2.urlopen(self.path, context=context).getcode()
             if return_code == 200:
                 self.count += 1
             else:
@@ -49,17 +51,9 @@ def parse_args():
 
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 
-    parser.add_argument('-p', '--path', required=False, default='http://127.0.0.1:3000', action='store',
-                        dest='path',
-                        help='HTTP address to which the requests should go')
-
-    parser.add_argument('-s', '--seconds', required=False, default=300, action='store',
-                        dest='seconds',
-                        help='Maximum time that the script should run (seconds)')
-
-    parser.add_argument('-t', '--threads', required=False, default=1, action='store',
-                        dest='threads',
-                        help='Quantity of threads that script should start')
+    parser.add_argument('--path', default=os.environ.get('PATH', None))
+    parser.add_argument('--seconds', default=os.environ.get('SECONDS', None))
+    parser.add_argument('--threads', default=os.environ.get('THREADS', None))
 
     return parser.parse_args()
 
