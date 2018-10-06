@@ -62,25 +62,30 @@ reichert@ubuntu:~$ python analyzer.py --threads 2 --seconds 10 --url https://127
 ### Management Commands:
 For further management of the application you will need to use following commands
 
+Check the status of the existing services
+```console
+sudo docker service ls
+```
+
 Update an existing service
 ```console
-sudo docker service update --update-parallelism 1 --update-order start-first --update-delay 10s --update-failure-action=rollback --image tiagoreichert/cloud-challenge-nodejs:2.0 nodejs
+sudo docker service update --update-parallelism 1 --update-order start-first --update-delay 10s --update-failure-action=rollback --image tiagoreichert/cloud-challenge-nodejs:2.0 app_nodejs
 ```
 Rollback the update if wanted
 ```console
-sudo docker service rollback nodejs
+sudo docker service rollback app_nodejs
 ```
-Remove service
+Remove stack
 ```console
-sudo docker service remove nodejs
+sudo docker stack rm app
 ```
 Scale the service up or down
 ```console
-sudo docker service scale nodejs=3
+sudo docker service scale app_nodejs=3
 ```
 Check service logs
 ```console
-sudo docker service logs nodejs
+sudo docker service logs app_nodejs
 ```
 
 ### Additional comments:
