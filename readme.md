@@ -1,4 +1,4 @@
-[![MIT License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE) [![Dockerhub](http://img.shields.io/badge/dockerhub-NodeJS-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-nodejs/) [![Dockerhub](http://img.shields.io/badge/dockerhub-LogParser-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-logparser/) 
+[![MIT License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE) [![Dockerhub](http://img.shields.io/badge/dockerhub-NodeJS-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-nodejs/) [![Dockerhub](http://img.shields.io/badge/dockerhub-LogParser-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-logparser/)  [![Dockerhub](http://img.shields.io/badge/dockerhub-Nginx-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-nginx/)  [![Dockerhub](http://img.shields.io/badge/dockerhub-ThroughputAnalyzer-blue.svg?style=flat)](https://hub.docker.com/r/tiagoreichert/cloud-challenge-analyzer/)
 
 ## Cloud Challenge
 This repository contains the source codes for a cloud challenge.
@@ -31,20 +31,20 @@ sudo docker service ls
 ```
 
 Now you should already be able to access your application over HTTP and HTTPS.
-If you specified valid SMTP variables, you will also receive the emails from log_parser on the defined time period defined with the cron mask.
+If you specified valid SMTP variables, you will also receive the emails from log_parser on the time period defined with the cron mask.
 
 ### Throughput Analyzer
 To analyze the throughput supported by the application the script [analyzer.py](throughput/analyzer.py)
-was developed, to run it you need to specify following parameters:
+was developed, to run it you will need to specify following parameters:
 
-- URL : The path to which the script should do requests;
+- URL : The url to which the script should do requests;
 - SECONDS : The maximum time that the script should run;
 - THREADS: The quantity of threads that should be started to run the script.
 
 The quantity of requests per second may vary to the resources available for the script to run (CPU and network are the biggest bottlenecks).
 
 ##### Running with Docker:
-While using docker to run the script you will need to specify an address from which the container can access the application
+You will need to specify an address from which the container can access the application
 ```console
 reichert@ubuntu:~$ sudo docker run --rm -e URL=https://172.16.111.129 -e THREADS=2 -e SECONDS=10 tiagoreichert/cloud-challenge-analyzer
 4373 requests during 0:00:10.001029 [437 req/s]
@@ -58,7 +58,6 @@ reichert@ubuntu:~$ python analyzer.py --threads 2 --seconds 10 --url https://127
 4412 requests during 0:00:10.006118 [441 req/s]
 ```
 
-
 ### Management Commands:
 For further management of the application you will need to use following commands
 
@@ -66,7 +65,6 @@ Check the status of the existing services
 ```console
 sudo docker service ls
 ```
-
 Update an existing service
 ```console
 sudo docker service update --update-parallelism 1 --update-order start-first --update-delay 10s --update-failure-action=rollback --image tiagoreichert/cloud-challenge-nodejs:2.0 app_nodejs
