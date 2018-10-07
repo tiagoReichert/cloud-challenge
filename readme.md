@@ -51,7 +51,7 @@ reichert@ubuntu:~$ sudo docker run --rm -e URL=https://172.16.111.129 -e THREADS
 ```
 
 ##### Running without Docker:
-You can also run the script directly using Python 2 (please notice that python is not installed with the cloud-init script so if you want to use this option, make sure that you has Python 2.7.2 installed):
+You can also run the script directly using Python 2 (please notice that python is not installed with the cloud-init script so if you want to use this option, make sure that you has Python 2.7.12 installed):
 ```console
 reichert@ubuntu:~$ curl -O https://raw.githubusercontent.com/tiagoReichert/cloud-challenge/master/throughput/analyzer.py
 reichert@ubuntu:~$ python analyzer.py --threads 2 --seconds 10 --url https://127.0.0.1
