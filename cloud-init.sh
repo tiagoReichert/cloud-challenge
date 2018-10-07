@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Specify here the needed/missing parameters:
+# Do not use passwords or email addresses containing /
 export SMTP_SERVER='smtp.gmail.com'
 export SMTP_PORT=587
 export SMTP_TLS=True
@@ -42,7 +43,7 @@ sed -i "s/{SMTP_PASSWORD}/${SMTP_PASSWORD}/" ./docker-compose.yml
 sed -i "s/{SMTP_RECIPIENT}/${SMTP_RECIPIENT}/" ./docker-compose.yml
 sed -i "s/{NODEJS_REPLICAS}/${NODEJS_REPLICAS}/" ./docker-compose.yml
 sed -i "s/{NGINX_WORKERS}/${NGINX_WORKERS}/" ./docker-compose.yml
-sed -i "s/{CRON_MASK}/${LOGPARSER_CRON_MASK}/" ./docker-compose.yml
+sed -i "s@{CRON_MASK}@${LOGPARSER_CRON_MASK}@" ./docker-compose.yml
 
 # Start the stack with NodeJS, Nginx and LogParser
 sudo docker stack deploy --compose-file docker-compose.yml app
